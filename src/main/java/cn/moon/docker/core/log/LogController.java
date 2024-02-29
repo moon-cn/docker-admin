@@ -27,6 +27,8 @@ public class LogController {
 
             if (!file.exists()) {
                 writer.write("日志文件已被清理" + file.getAbsolutePath());
+                writer.flush();
+                return;
             }
 
 
