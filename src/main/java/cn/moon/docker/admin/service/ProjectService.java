@@ -75,7 +75,7 @@ public class ProjectService extends BaseService<Project> {
 
     @Async
     public void buildImage(String buildlogFileId, String branchOrTag, String version, String context, String dockerfile, boolean useCache) {
-        MDC.put("logFileId",buildlogFileId);
+        MDC.put("logFileId", buildlogFileId);
         BuildLog buildLog = logDao.findById(buildlogFileId).orElseGet(null);
         Project project = this.findOne(buildLog.getProjectId());
         try {
@@ -87,10 +87,15 @@ public class ProjectService extends BaseService<Project> {
             Assert.notNull(host, "无构建主机");
             log.info("构建主机： {} {} {}", host.getName(), host.getDockerHost(), host.getRemark());
 
-
+            String username = null;
+            String password = null;
             GitCredential credential = gitCredentialService.findBestByUrl(project.getGitUrl());
+            if (credential != null) {
+                username = credential.getUsername();
+                password = credential.getPassword();
+            }
 
-            GitTool.CloneResult cloneResult = GitTool.clone(project.getGitUrl(), credential.getUsername(), credential.getPassword(), branchOrTag);
+            GitTool.CloneResult cloneResult = GitTool.clone(project.getGitUrl(), username, password, branchOrTag);
             File workDir = cloneResult.getDir();
             log.info("代码下载完毕 " + workDir);
             log.info("提交信息:" + cloneResult.getCodeMessage());
@@ -151,7 +156,6 @@ public class ProjectService extends BaseService<Project> {
             }
 
             client.close();
-
 
 
             buildLog.setSuccess(true);

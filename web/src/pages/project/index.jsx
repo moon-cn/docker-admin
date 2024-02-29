@@ -44,7 +44,7 @@ export default class extends React.Component {
       sorter: true,
       formItemProps: {
         rules: [{required: true}],
-        help:'例如：https://github.com/DaoCloud/dao-2048.git'
+        help:'例如：https://github.com/moon-cn/docker-hello.git'
       }
     },
 

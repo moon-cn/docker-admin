@@ -20,7 +20,7 @@ public class GitTool {
 
     @AllArgsConstructor
     @Data
-    public static  class  CloneResult {
+    public static class CloneResult {
         File dir;
         String codeMessage;
     }
@@ -30,7 +30,7 @@ public class GitTool {
         String dirName = url.substring(url.lastIndexOf("/") + 1);
         dirName = dirName.replace(".git", "");
 
-        File workDir = new File("/tmp/"+dirName+"/" + DateUtil.date().toString("yyyyMMddHHmmss"));
+        File workDir = new File("/tmp/" + dirName + "/" + DateUtil.date().toString("yyyyMMddHHmmss"));
 
         long start = System.currentTimeMillis();
 
@@ -43,13 +43,18 @@ public class GitTool {
         if (workDir.exists()) {
             workDir.delete();
         }
-        UsernamePasswordCredentialsProvider provider = new UsernamePasswordCredentialsProvider(user, password);
+
 
         CloneCommand cloneCommand = Git.cloneRepository()
                 .setCloneSubmodules(true)
                 .setURI(url)
-                .setCredentialsProvider(provider)
                 .setDirectory(workDir);
+
+        // support public project by anon
+        if (user != null && password != null) {
+            UsernamePasswordCredentialsProvider provider = new UsernamePasswordCredentialsProvider(user, password);
+            cloneCommand.setCredentialsProvider(provider);
+        }
 
         if (!isCommitRef) {
             cloneCommand.setBranch(value);
