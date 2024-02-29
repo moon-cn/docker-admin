@@ -7,11 +7,14 @@
 
 
 # 快速开始
+## 安装
 ```
 docker pull mooncn/docker-admin
 docker run -d -p 7001:7001  -e dpip=127.0.0.1 -dpport=3306 -e dbpwd=123456  -v /var/run/docker.sock:/var/run/docker.sock mooncn/docker-admin
 ```
-浏览器访问 http://127.0.0.1:7001 
+## 设置
+浏览器访问 http://127.0.0.1:7001 账号：admin 密码：123456
+
 
 
 # docker-compose

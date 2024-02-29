@@ -43,23 +43,24 @@ export default class extends React.Component {
       width: 250,
       sorter: true,
       formItemProps: {
-        rules: [{required: true}]
+        rules: [{required: true}],
+        help:'例如：https://github.com/DaoCloud/dao-2048.git'
       }
     },
 
 
     {
-      title: '默认分支',
+      title: '分支',
       dataIndex: 'branch',
     },
 
     {
-      title: '默认dockerfile',
+      title: 'dockerfile',
       dataIndex: 'dockerfile',
     },
 
     {
-      title: '默认版本',
+      title: '版本',
       dataIndex: 'defaultVersion',
       formItemProps: {
         help: '不填则每日一个版本'

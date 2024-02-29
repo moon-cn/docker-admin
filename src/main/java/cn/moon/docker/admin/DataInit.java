@@ -41,8 +41,8 @@ public class DataInit implements ApplicationRunner {
 
         if(hostService.count() == 0){
             Host host = new Host();
-            host.setName("宿主机");
-            host.setDockerHost("unix:///var/run/docker.sock");
+            host.setName("主机1");
+            host.setDockerHost("tcp://localhost:2375");
             host.setIsRunner(true);
             hostService.save(host);
             log.info("创建默认主机配置 {}", host);

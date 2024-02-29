@@ -1,16 +1,14 @@
 import {PlusOutlined} from '@ant-design/icons';
-import {Button, Divider, message, Modal, Popconfirm} from 'antd';
+import {Button, Divider, Input, message, Modal, Popconfirm, Select} from 'antd';
 import React from 'react';
 
-import {get, getPageableData, post} from "../../utils/request";
-import common from "../../utils/common";
+import {get, getPageableData, post} from "../../../utils/request";
+import common from "../../../utils/common";
 import {ProTable} from "@ant-design/pro-components";
-import {history} from "umi";
-import {notPermitted} from "../../utils/SysConfig";
 
-const addTitle = "添加项目"
-const editTitle = '编辑项目'
-let api = '/api/gitCredential/';
+const addTitle = "添加租户"
+const editTitle = '编辑租户'
+let api = '/api/tenant/';
 
 
 export default class extends React.Component {
@@ -20,22 +18,34 @@ export default class extends React.Component {
     showEditForm: false,
     formValues: {},
 
+    roleOptions: [],
+    projectOptions: [],
+    appOptions: [],
+
   }
+
+
+
+
   actionRef = React.createRef();
   columns = [
     {
-      title: 'URL',
-      dataIndex: 'url',
+      title: '名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '编码',
+      dataIndex: 'code',
     },
 
+
+
     {
-      title: '帐号',
-      dataIndex: 'username',
-    },
-    {
-      title: '密码',
-      dataIndex: 'password',
-      valueType: 'password',
+      title: '最近更新',
+      dataIndex: 'modifyTime',
+      sorter: true,
+      hideInSearch: true,
+      hideInForm: true,
     },
 
     {
@@ -44,20 +54,17 @@ export default class extends React.Component {
       valueType: 'option',
       render: (_, row) => {
         return <>
-          <Button
-            type='link'
-            disabled={notPermitted('gitCredential:save')}
-            onClick={() => {
+          <a onClick={() => {
             this.state.showEditForm = true;
             this.state.formValues = row;
             this.setState({
               showEditForm: true,
               formValues: row
             })
-          }}>修改</Button>
-          <Divider type={"vertical"} />
-          <Popconfirm disabled={notPermitted('gitCredential:delete')} title="确定删除，删除后将不可恢复" onConfirm={()=>this.handleDelete(row)}>
-            <a disabled={notPermitted('gitCredential:delete')}>删除</a>
+          }}>修改</a>
+          <Divider type={"vertical"}/>
+          <Popconfirm title="确定删除，删除后将不可恢复" onConfirm={() => this.handleDelete(row)}>
+            <a>删除</a>
           </Popconfirm>
 
         </>
@@ -74,10 +81,10 @@ export default class extends React.Component {
 
   reload = () => {
     this.actionRef.current.reload();
-  };
+  }
 
-  handleUpdate = value => {
-    let params = value;
+  handleUpdate = values => {
+    let params = values;
     params.id = this.state.formValues.id
 
     post(api + 'update', params).then(rs => {
@@ -87,8 +94,8 @@ export default class extends React.Component {
     })
   }
   handleDelete = (row) => {
-    get(api + 'delete', {id:row.id}).then(rs => {
-      message.info(rs.msg )
+    get(api + 'delete', {id: row.id}).then(rs => {
+      message.info(rs.msg)
       this.actionRef.current.reload();
     })
   }
@@ -98,27 +105,25 @@ export default class extends React.Component {
     let {showAddForm, showEditForm} = this.state
 
     return (<>
-            <ProTable
+      <ProTable
+        actionRef={this.actionRef}
+        search={false}
+        toolBarRender={(action, {selectedRows}) => [
+          <Button type="primary" onClick={() => {
+            this.state.showAddForm = true;
+            this.setState(this.state)
+          }}>
+            <PlusOutlined/> 新建
+          </Button>,
+        ]}
+        request={(params, sort) => getPageableData(api + "list", params, sort)}
+        columns={this.columns}
+        rowSelection={false}
+        rowKey="id"
+        bordered={true}
+        options={{search: true}}
 
-              actionRef={this.actionRef}
-              search={false}
-              toolBarRender={(action, {selectedRows}) => [
-                <Button             disabled={notPermitted('gitCredential:save')}
-                                    type="primary" onClick={() => {
-                  this.state.showAddForm = true;
-                  this.setState(this.state)
-                }}>
-                  <PlusOutlined/> 新建
-                </Button>,
-              ]}
-              request={(params, sort) => getPageableData(api + "list" , params, sort)}
-              columns={this.columns}
-              rowSelection={false}
-              rowKey="id"
-              bordered={true}
-              options={{search: true}}
-
-            />
+      />
 
 
       <Modal

@@ -5,11 +5,12 @@ import {
   AppstoreOutlined, BankOutlined,
   CloudServerOutlined, ClusterOutlined, CreditCardOutlined,
   DatabaseOutlined, FileOutlined, LogoutOutlined, ProfileOutlined,
-  ProjectOutlined,
+  ProjectOutlined, SettingOutlined,
   UserOutlined
 } from "@ant-design/icons";
 import {get} from "../utils/request";
 import {notPermitted} from "../utils/SysConfig";
+import Settings from "../pages/settings";
 
 const {Content, Sider} = Layout;
 
@@ -100,30 +101,12 @@ export default class extends React.Component {
             disabled: notPermitted('script:list'),
           },
           {
-            key: 'user',
-            label: '用户',
-            icon: <UserOutlined style={{color: 'burlywood'}}/>,
+            key: 'settings',
+            label: '设置',
+            icon: <SettingOutlined style={{color: 'burlywood'}}/>,
             disabled: notPermitted('user:list'),
           },
-          {
-            key: 'tenant',
-            label: '租户',
-            icon: <BankOutlined style={{color: 'gainsboro'}}/>,
-            disabled: notPermitted('tenant:list'),
-          },
-          {
-            key: 'gitCredential',
-            label: '凭据',
-            icon: <CreditCardOutlined style={{color: 'indianred'}}/>,
-            disabled: notPermitted('gitCredential:list'),
-          },
 
-          {
-            key: 'oplog',
-            label: '日志',
-            icon: <FileOutlined style={{color: 'darkorange'}}/>,
-            disabled: notPermitted('oplog:list'),
-          },
         ]
       },
 

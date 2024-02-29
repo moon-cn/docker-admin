@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({IllegalStateException.class, IllegalArgumentException.class})
     public AjaxResult ex(Exception e) {
         log.error("异常", e);
         return AjaxResult.error(e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage());

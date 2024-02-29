@@ -1,6 +1,6 @@
 import {Button, Card, Table} from "antd";
 import React from "react";
-import {get, getPageableData} from "../../utils/request";
+import {get, getPageableData} from "../../../utils/request";
 import {ProTable} from "@ant-design/pro-components";
 
 export default class extends React.Component {
@@ -26,7 +26,7 @@ export default class extends React.Component {
   ]
 
   render() {
-    return <Card size={"small"} className='h-full' title='操作日志'>
+    return <>
 
 
 
@@ -45,6 +45,6 @@ export default class extends React.Component {
 
 
       />
-    </Card>
+    </>
   }
 }

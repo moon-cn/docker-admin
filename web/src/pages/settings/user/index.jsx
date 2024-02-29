@@ -2,13 +2,13 @@ import {PlusOutlined} from '@ant-design/icons';
 import {Button, Divider, Input, message, Modal, Popconfirm, Select} from 'antd';
 import React from 'react';
 
-import {get, getPageableData, post} from "../../utils/request";
-import common from "../../utils/common";
+import {get, getPageableData, post} from "../../../utils/request";
+import common from "../../../utils/common";
 import {ProTable} from "@ant-design/pro-components";
 
-const addTitle = "添加租户"
-const editTitle = '编辑租户'
-let api = '/api/tenant/';
+const addTitle = "添加用户"
+const editTitle = '编辑用户'
+let api = '/api/user/';
 
 
 export default class extends React.Component {
@@ -19,26 +19,65 @@ export default class extends React.Component {
     formValues: {},
 
     roleOptions: [],
-    projectOptions: [],
-    appOptions: [],
+    tenantOptions: [],
+
 
   }
 
 
+  componentDidMount() {
+    get('api/user/roleOptions').then(rs => {
+      let roleOptions = rs.data;
 
+      this.setState({roleOptions})
+    })
+    get('api/tenant/options').then(rs => {
+      let tenantOptions = rs.data;
+
+      this.setState({tenantOptions})
+    })
+
+  }
 
   actionRef = React.createRef();
   columns = [
     {
-      title: '名称',
+      title: '姓名',
       dataIndex: 'name',
     },
     {
-      title: '编码',
-      dataIndex: 'code',
+      title: '账号',
+      dataIndex: 'username',
+    },
+    {
+      title: '密码',
+      dataIndex: 'password',
+      renderFormItem: () => {
+        return <Input.Password placeholder='不修改则留空'></Input.Password>
+      },
+      hideInTable: true,
+    },
+    {
+      title: '角色',
+      dataIndex: 'role',
+      renderFormItem: () => {
+        return <Select options={this.state.roleOptions} allowClear/>
+      },
+      render: (v) => {
+        return this.state.roleOptions.find(r => r.value == v)?.label || v
+      }
     },
 
-
+    {
+      title: '租户',
+      dataIndex: ['tenant', 'code'],
+      renderFormItem: () => {
+        return <Select options={this.state.tenantOptions} allowClear/>
+      },
+      render: (v) => {
+        return this.state.tenantOptions.find(r => r.value == v)?.label || v
+      }
+    },
 
     {
       title: '最近更新',

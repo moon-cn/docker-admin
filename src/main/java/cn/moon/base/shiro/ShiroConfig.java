@@ -45,6 +45,7 @@ public class ShiroConfig {
 
     map.put("/api/login/check", "anon");
     map.put("/api/login", "anon");
+    map.put("/api/log/**", "anon");
     map.put("/api/**", "authc");
     map.put("/**", "anon");
 
