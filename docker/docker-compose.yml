@@ -11,12 +11,12 @@ services:
     environment:
       dbip: 172.17.0.1 # 容器网关
       dbport: 3305
-      dbpwd: xgrnFuxotbr&
+      dbpwd: 2zbdWEs6vRHe8wc
   mysql:
     image: mysql:5.7.35
     privileged: true
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 2zbdWEs6vRHe8wc
       MYSQL_DATABASE: docker_admin
       TZ: Asia/Shanghai
     command:
