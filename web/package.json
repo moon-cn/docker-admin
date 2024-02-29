@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "umi dev",
+    "start-nodejs-new": "set NODE_OPTIONS=--openssl-legacy-provider &&   umi dev",
+    "build": "umi build",
+    "tailwindcss": "npx tailwindcss -i ./src/input.css -o ./src/tailwind-dist.css --watch",
+    "aliyun": "npm config set registry https://registry.npmmirror.com"
+  },
+  "dependencies": {
+    "umi": "^3.0.0",
+    "@ant-design/icons": "^5.2.6",
+    "@ant-design/pro-components": "^2.6.35",
+    "antd": "^4.0.0",
+    "axios": "^1.6.1",
+    "codemirror": "^5.0.0",
+    "react": "18.x",
+    "react-dom": "18.x",
+    "react-lazylog": "^4.5.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.5",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@umijs/preset-react": "1.x",
+    "@umijs/test": "^3.5.41",
+    "lint-staged": "^10.0.7",
+    "prettier": "^2.2.0",
+    "typescript": "^4.1.2",
+    "yorkie": "^2.0.0"
+  }
+
+}

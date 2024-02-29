@@ -1,0 +1,9 @@
+Spring Boot  ${spring-boot.version}
+配置文件 ${spring.profiles.active}
+端口号 ${server.port}
+数据库URL ${spring.datasource.url}
+数据库用户名 ${spring.datasource.username}
+自动生成表 spring.jpa.hibernate.ddl-auto=${spring.jpa.hibernate.ddl-auto}
+spring.jpa.open-in-view=${spring.jpa.open-in-view}
+JAVA 版本 ${java.version}
+

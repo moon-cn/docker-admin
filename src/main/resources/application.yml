@@ -1,0 +1,78 @@
+dbip: 127.0.0.1
+dbpwd: 123456
+dbport: 3306
+dbname: docker_admin
+
+# 注册中心，默认第一个
+registry:
+  list:
+    # 阿里云镜像
+    - type: ALIYUN
+      url: registry.cn-hangzhou.aliyuncs.com
+      namespace: namespace
+      username: username
+      password: 123456
+      api-key: 123456
+      api-secret: 123456
+      default-registry: true
+
+      # 腾讯云镜像
+    - type: TENCENT
+      url: ccr.ccs.tencentyun.com
+      namespace: namespace
+      username: namespace
+      password: 123456
+      api-key: 123456
+      api-secret: 123456
+      default-registry: false
+
+
+server:
+  port: 7001
+  servlet:
+    session:
+      timeout: 8h
+
+
+# Spring配置
+spring:
+  profiles:
+    active: dev
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 2000
+        one-indexed-parameters: true
+        page-parameter: pageNumber
+        size-parameter: pageSize
+      sort.sort-parameter: orderBy
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 300MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: MYSQL
+    show-sql: false
+    naming.physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    open-in-view: false
+
+
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${dbip}:${dbport}/${dbname}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: ${dbpwd}
+    hikari:
+      minimum-idle: 3
+  mvc:
+    async:
+      # 异步请求超时时间， 用于日志滚动显示
+      request-timeout: 15m

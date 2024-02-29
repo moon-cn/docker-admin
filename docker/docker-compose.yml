@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  admin:
+    image: mooncn/docker-admin:latest
+    restart: always
+    ports:
+      - "7001:7001" # 主机端口:容器端口
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      dbip: 172.17.0.1 # 容器网关
+      dbport: 3305
+      dbpwd: xgrnFuxotbr&
+  mysql:
+    image: mysql:5.7.35
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: docker_admin
+      TZ: Asia/Shanghai
+    command:
+      --lower_case_table_names=0
+      --max_connections=1000
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --wait_timeout=31536000
+      --interactive_timeout=31536000
+      --default-authentication-plugin=mysql_native_password
+      --max_allowed_packet=100M
+      --transaction-isolation=READ-COMMITTED
+    ports:
+      - "3305:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql

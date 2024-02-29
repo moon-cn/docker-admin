@@ -1,0 +1,15 @@
+@tailwind components;
+@tailwind utilities;
+body {
+  @apply bg-gray-200 m-0 p-0
+}
+
+.logo {
+  @apply  p-2 bg-blue-400 text-white font-bold text-center;
+  height: 40px;
+  line-height: 20px;
+  width: 80px;
+  margin: 20px auto;
+
+
+}
