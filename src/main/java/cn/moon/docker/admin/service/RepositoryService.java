@@ -53,47 +53,51 @@ public class RepositoryService extends BaseService<Repository> {
         Repository repository = repositoryDao.findByUrl(url);
 
         log.error("镜像仓库未找到" + url);
-        if(repository == null){
+        if (repository == null) {
             return Collections.emptyList();
         }
 
 
-        List<ImageTag> tags =imageTagDao.findByUrlOrderByTime(url);
+        List<ImageTag> tags = imageTagDao.findByUrlOrderByTime(url);
 
         return tags;
     }
 
     @Transactional
-    public void saveTags( List<ImageTag> tagList) {
+    public void saveTags(List<ImageTag> tagList) {
         imageTagDao.saveAll(tagList);
     }
 
     @Async
     @EventListener(BuildSuccessEvent.class)
     @Transactional
-    public void sysByProject(BuildSuccessEvent e) throws Exception {
-        log.info("监听到收到项目构建成功 , 开始同步远程仓库相关信息{}", e);
-        String url = e.getBuildLog().getImageUrl();
+    public void sysByProject(BuildSuccessEvent e) {
+        try {
+            log.info("监听到收到项目构建成功 , 开始同步远程仓库相关信息{}", e);
+            String url = e.getBuildLog().getImageUrl();
 
-        String projectId = e.getBuildLog().getProjectId();
-        Project project = projectDao.findById(projectId).orElse(null);
+            String projectId = e.getBuildLog().getProjectId();
+            Project project = projectDao.findById(projectId).orElse(null);
 
 
-        RegistryApi api = registryConfig.findApiByUrl(url);
-        Page<RepositoryVo> page = api.findRepositoryList(Pageable.ofSize(50), project.getName());
+            RegistryApi api = registryConfig.findApiByUrl(url);
+            Page<RepositoryVo> page = api.findRepositoryList(Pageable.ofSize(50), project.getName());
 
-        RepositoryVo vo = page.stream().filter(t -> t.getName().equals(project.getName())).findFirst().orElse(null);
+            RepositoryVo vo = page.stream().filter(t -> t.getName().equals(project.getName())).findFirst().orElse(null);
 
-        Assert.notNull(vo, "远程仓库未找到" + project.getName());
+            Assert.notNull(vo, "远程仓库未找到" + project.getName());
 
-        Repository repository = repositoryDao.findByUrl(vo.getUrl());
-        if(repository == null){
-            repository = new Repository();
-            BeanUtil.copyProperties(vo, repository);
+            Repository repository = repositoryDao.findByUrl(vo.getUrl());
+            if (repository == null) {
+                repository = new Repository();
+                BeanUtil.copyProperties(vo, repository);
+            }
+
+            repository.setTenantId(project.getTenantId());
+            repositoryDao.save(repository);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
-        repository.setTenantId(project.getTenantId());
-        repositoryDao.save(repository);
     }
 
     @Async
@@ -105,7 +109,7 @@ public class RepositoryService extends BaseService<Repository> {
         String version = e.getBuildLog().getVersion();
 
         long count = imageTagDao.countByUrlAndName(url, version);
-        if(count == 0){
+        if (count == 0) {
             ImageTag tag = new ImageTag();
             tag.setName(version);
             tag.setUrl(url);
