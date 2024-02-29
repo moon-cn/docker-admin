@@ -22,7 +22,7 @@
         </discriminator>
         <sift>
             <!--具体的写日志appender，每一个taskId创建一个文件-->
-            <appender name="${logTag}" class="ch.qos.logback.core.FileAppender">
+            <appender name="logTag" class="ch.qos.logback.core.FileAppender">
                 <file>${LOG_HOME}/${logFileId}.log</file>
                 <append>false</append>
                 <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -35,7 +35,7 @@
 
 
 
-    <logger name="cn.docker">
+    <logger name="cn.moon.docker">
         <appender-ref ref="TASK_LOG" />
     </logger>
 
