@@ -3,7 +3,7 @@ dbpwd: 123456
 dbport: 3306
 dbname: docker_admin
 
-# 注册中心，默认第一个
+# 注册中心
 registry:
   list:
     # 阿里云镜像
@@ -36,8 +36,6 @@ server:
 
 # Spring配置
 spring:
-  profiles:
-    active: dev
   data:
     web:
       pageable:

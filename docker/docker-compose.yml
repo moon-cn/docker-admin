@@ -8,10 +8,12 @@ services:
       - "7001:7001" # 主机端口:容器端口
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./application-prod.yml:/home/application-prod.yml"
     environment:
       dbip: 172.17.0.1 # 容器网关
       dbport: 3305
       dbpwd: 2zbdWEs6vRHe8wc
+      spring.profiles.active: prod
   mysql:
     image: mysql:5.7.35
     privileged: true

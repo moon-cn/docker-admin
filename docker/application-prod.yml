@@ -1,0 +1,12 @@
+# 注册中心
+registry:
+  list:
+    # 阿里云镜像
+    - type: ALIYUN
+      url: registry.cn-hangzhou.aliyuncs.com
+      namespace: namespace
+      username: username
+      password: 123456
+      api-key: 123456
+      api-secret: 123456
+      default-registry: true
